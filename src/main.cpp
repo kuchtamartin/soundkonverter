@@ -6,7 +6,6 @@
 
 #include <QCommandLineParser>
 #include <QApplication>
-#include <QDebug>
 
 #include <KMainWindow>
 #include <KAboutData>
