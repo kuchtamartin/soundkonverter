@@ -16,7 +16,6 @@
 #include <taglib.h>
 
 #include <KActionCollection>
-#include <KApplication>
 #include <KActionMenu>
 #include <KLocale>
 #include <KToolBar>
@@ -25,6 +24,7 @@
 #include <KMenu>
 #include <KMessageBox>
 #include <QDir>
+#include <QApplication>
 
 #include <KStatusNotifierItem>
 
@@ -214,7 +214,7 @@ void soundKonverter::showReplayGainScanner()
 void soundKonverter::replayGainScannerClosed()
 {
     if( !isVisible() )
-        KApplication::kApplication()->quit();
+        qApp->quit();
 }
 
 void soundKonverter::showMainWindow()
@@ -303,7 +303,7 @@ void soundKonverter::conversionStarted()
 void soundKonverter::conversionStopped( bool failed )
 {
     if( autoclose && !failed /*&& !m_view->isVisible()*/ )
-        KApplication::kApplication()->quit(); // close app on conversion stop unless the conversion was stopped by the user or the window is shown
+        qApp->quit(); // close app on conversion stop unless the conversion was stopped by the user or the window is shown
 
     if( systemTray )
     {

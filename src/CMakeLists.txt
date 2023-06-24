@@ -29,7 +29,7 @@ include(ECMInstallIcons)
 include(FeatureSummary)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Xml)
-find_package(KF5 REQUIRED COMPONENTS I18n XmlGui KIO Solid Config ConfigWidgets WidgetsAddons KDELibs4Support)
+find_package(KF5 REQUIRED COMPONENTS I18n XmlGui KIO Solid Config ConfigWidgets WidgetsAddons KDELibs4Support DBusAddons)
 find_package(KF5Cddb)
 find_package(Phonon4Qt5 REQUIRED)
 
@@ -66,7 +66,7 @@ set(soundkonvertercore_SRCS
 )
 
 add_library(soundkonvertercore SHARED ${soundkonvertercore_SRCS})
-target_link_libraries(soundkonvertercore KF5::WidgetsAddons KF5::KIOFileWidgets KF5::KIOCore KF5::KDELibs4Support)
+target_link_libraries(soundkonvertercore KF5::WidgetsAddons KF5::KIOFileWidgets KF5::KIOCore KF5::KDELibs4Support KF5::DBusAddons)
 
 install(TARGETS soundkonvertercore DESTINATION ${LIB_INSTALL_DIR})
 
@@ -118,7 +118,7 @@ set(soundkonverter_SRCS
 )
 
 add_executable(soundkonverter ${soundkonverter_SRCS})
-target_link_libraries(soundkonverter KF5::WidgetsAddons KF5::KIOFileWidgets KF5::KIOCore KF5::Solid KF5::Cddb Phonon::phonon4qt5 Taglib::Taglib ${CDPARANOIA_LIBRARIES} KF5::KDELibs4Support soundkonvertercore)
+target_link_libraries(soundkonverter KF5::WidgetsAddons KF5::KIOFileWidgets KF5::KIOCore KF5::Solid KF5::Cddb Phonon::phonon4qt5 Taglib::Taglib ${CDPARANOIA_LIBRARIES} KF5::KDELibs4Support KF5::DBusAddons soundkonvertercore)
 
 install(TARGETS soundkonverter DESTINATION ${BIN_INSTALL_DIR})
 

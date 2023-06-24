@@ -12,7 +12,6 @@
 #include <KPushButton>
 #include <KIcon>
 #include <KMessageBox>
-#include <KApplication>
 
 
 OptionsLayer::OptionsLayer( Config *config, QWidget *parent )
@@ -129,7 +128,7 @@ void OptionsLayer::ok()
         options->accepted();
         pOk->setDisabled( true );
         pCancel->setDisabled( true );
-        kapp->processEvents();
+	qApp->processEvents();
         emit done( urls, conversionOptions, command );
         emit saveFileList();
         fadeOut();

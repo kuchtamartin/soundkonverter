@@ -6,38 +6,39 @@
 #include <KStandardDirs>
 #include <KUrl>
 #include <QFile>
-
+#include <QObject>
+#include <QApplication>
+#include <QCommandLineParser>
 
 soundKonverterApp::soundKonverterApp()
-    : KUniqueApplication()
+    : QObject()
 {
     mainWindow = new soundKonverter();
-    setActiveWindow( mainWindow );
+    qApp->setActiveWindow( mainWindow );
 }
 
 soundKonverterApp::~soundKonverterApp()
 {}
 
-int soundKonverterApp::newInstance()
+int soundKonverterApp::newInstance(QCommandLineParser *args)
 {
-    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
     static bool first = true;
     bool visible = true;
     bool autoclose = false;
     bool autostart = false;
     bool activateMainWindow = true;
     
-    if( ( first || !mainWindow->isVisible() ) && args->isSet("replaygain") && args->count() > 0 )
+    if( ( first || !mainWindow->isVisible() ) && args->isSet("replaygain") && args->positionalArguments().count() > 0 )
         visible = false;
 
     autoclose = args->isSet( "autoclose" );
     autostart = args->isSet( "autostart" );
 
-    const QString profile = args->getOption( "profile" );
-    const QString format = args->getOption( "format" );
-    const QString directory = args->getOption( "output" );
-    const QString notifyCommand = args->getOption( "command" );
-    const QString fileListPath = args->getOption( "file-list" );
+    const QString profile = args->value( "profile" );
+    const QString format = args->value( "format" );
+    const QString directory = args->value( "output" );
+    const QString notifyCommand = args->value( "command" );
+    const QString fileListPath = args->value( "file-list" );
 
     if( args->isSet( "invisible" ) )
     {
@@ -57,7 +58,7 @@ int soundKonverterApp::newInstance()
             mainWindow->show();
         }
         mainWindow->show();
-        kapp->processEvents();
+	qApp->processEvents();
         mainWindow->loadAutosaveFileList();
     }
     else if( !fileListPath.isEmpty() && QFile::exists(fileListPath) )
@@ -65,13 +66,13 @@ int soundKonverterApp::newInstance()
         mainWindow->loadFileList(fileListPath);
     }
 
-    const QString device = args->getOption( "rip" );
+    const QString device = args->value( "rip" );
     if( !device.isEmpty() )
     {
         const bool success = mainWindow->ripCd( device, profile, format, directory, notifyCommand );
         if( !success && first )
         {
-            kapp->quit();
+	    qApp->quit();
             return 0;
         }
     }
@@ -83,28 +84,18 @@ int soundKonverterApp::newInstance()
 
     if( args->isSet( "replaygain" ) )
     {
-        KUrl::List urls;
-        for( int i=0; i<args->count(); i++ )
+        if( !args->positionalArguments().isEmpty() )
         {
-            urls.append( args->arg(i) );
-        }
-        if( !urls.isEmpty() )
-        {
-            mainWindow->addReplayGainFiles( urls );
+            mainWindow->addReplayGainFiles( args->positionalArguments() );
             activateMainWindow = false;
         }
     }
     else
     {
-        KUrl::List urls;
-        for( int i=0; i<args->count(); i++ )
-        {
-            urls.append( args->arg(i) );
-        }
-        if( !urls.isEmpty() )
-            mainWindow->addConvertFiles( urls, profile, format, directory, notifyCommand );
+        if( !args->positionalArguments().isEmpty() ) {
+            mainWindow->addConvertFiles( args->positionalArguments(), profile, format, directory, notifyCommand );
+	}
     }
-    args->clear();
 
     if( activateMainWindow )
         mainWindow->activateWindow();

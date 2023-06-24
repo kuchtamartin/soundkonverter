@@ -9,7 +9,6 @@
 #include "outputdirectory.h"
 #include "codecproblems.h"
 
-#include <KApplication>
 #include <KIcon>
 #include <KAction>
 // #include <kactioncollection.h>
@@ -22,6 +21,7 @@
 #include <solid/block.h>
 #include <solid/opticaldrive.h>
 
+#include <QApplication>
 #include <QLayout>
 #include <QGridLayout>
 #include <QStringList>
@@ -105,7 +105,7 @@ FileList::~FileList()
 {
     // NOTE no cleanup needed since it all gets cleaned up in other classes
 
-    if( !KApplication::kApplication()->sessionSaving() )
+    if( !qApp->isSavingSession() )
     {
         QFile listFile( KStandardDirs::locateLocal("data","soundkonverter/filelist_autosave.xml") );
         listFile.remove();
@@ -256,7 +256,7 @@ int FileList::countDir( const QString& directory, bool recursive, int count )
     if( tScanStatus.elapsed() > ConfigUpdateDelay * 10 )
     {
         pScanStatus->setMaximum( count );
-        kapp->processEvents();
+	qApp->processEvents();
         tScanStatus.start();
     }
 
@@ -342,7 +342,7 @@ void FileList::addFiles( const QList<QUrl>& fileList, ConversionOptions *convers
                 {
                     optionsLayerHidden = true;
                     optionsLayer->hide();
-                    kapp->processEvents();
+		    qApp->processEvents();
                 }
 
                 //             debug
@@ -406,7 +406,7 @@ void FileList::addFiles( const QList<QUrl>& fileList, ConversionOptions *convers
         batchNumber++;
 
         if( batchNumber % 50 == 0 )
-            kapp->processEvents();
+            qApp->processEvents();
     }
 
     if( !pScanStatus->isVisible() )
@@ -436,7 +436,7 @@ void FileList::addDir( const QUrl& directory, bool recursive, const QStringList&
     const int count = countDir( directory.toLocalFile(), recursive );
 
     pScanStatus->setMaximum( count );
-    kapp->processEvents();
+    qApp->processEvents();
 
     listDir( directory.toLocalFile(), codecList, recursive, conversionOptionsId );
 

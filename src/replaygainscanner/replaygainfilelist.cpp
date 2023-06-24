@@ -5,7 +5,7 @@
 #include "config.h"
 #include "codecproblems.h"
 
-#include <KApplication>
+#include <QApplication>
 #include <QResizeEvent>
 #include <QGridLayout>
 #include <QProgressBar>
@@ -316,7 +316,7 @@ int ReplayGainFileList::countDir( const QString& directory, bool recursive, int 
     if( tScanStatus.elapsed() > ConfigUpdateDelay * 10 )
     {
         pScanStatus->setMaximum( count );
-        kapp->processEvents();
+	qApp->processEvents();
         tScanStatus.start();
     }
 
@@ -499,7 +499,7 @@ void ReplayGainFileList::addDir( const QUrl& directory, bool recursive, const QS
     const int count = countDir( directory.toLocalFile(), recursive );
 
     pScanStatus->setMaximum( count );
-    kapp->processEvents();
+    qApp->processEvents();
 
     listDir( directory.toLocalFile(), codecList, recursive );
 

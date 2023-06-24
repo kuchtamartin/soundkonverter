@@ -1,10 +1,9 @@
-
-
 #ifndef SOUNDKONVERTERAPP_H
 #define SOUNDKONVERTERAPP_H
 
 
-#include <kuniqueapplication.h>
+#include <QObject>
+#include <QCommandLineParser>
 
 class soundKonverter;
 
@@ -13,7 +12,7 @@ class soundKonverter;
  * @author Daniel Faust <hessijames@gmail.com>
  * @version 0.3
  */
-class soundKonverterApp : public KUniqueApplication
+class soundKonverterApp : public QObject
 {
     Q_OBJECT
 public:
@@ -24,7 +23,7 @@ public:
     ~soundKonverterApp();
 
     /** This function is called, when a new instance of soundKonverter should be created */
-    virtual int newInstance();
+    virtual int newInstance(QCommandLineParser *args);
 
 // private:
     soundKonverter *mainWindow;
