@@ -282,7 +282,7 @@ void soundkonverter_filter_sox::configDialogDefault()
 {
     if( configDialog.data() )
     {
-        configDialogSamplingRateQualityComboBox->setCurrentIndex( configDialogSamplingRateQualityComboBox->findData("high") );
+        configDialogSamplingRateQualityComboBox->setCurrentIndex( configDialogSamplingRateQualityComboBox->findData("very high") );
     }
 }
 
