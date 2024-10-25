@@ -20,7 +20,7 @@ soundkonverter_filter_sox::soundkonverter_filter_sox( QObject *parent, const QVa
 {
     Q_UNUSED(args)
 
-    configDialogSamplingRateQualityComboBox = 0;
+    configDialogSamplingRateQualityComboBox = 1;
 
     binaries["sox"] = "";
 
