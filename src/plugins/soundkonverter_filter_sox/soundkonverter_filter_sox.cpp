@@ -20,7 +20,7 @@ soundkonverter_filter_sox::soundkonverter_filter_sox( QObject *parent, const QVa
 {
     Q_UNUSED(args)
 
-    configDialogSamplingRateQualityComboBox = 1;
+    configDialogSamplingRateQualityComboBox = 0;
 
     binaries["sox"] = "";
 
@@ -29,7 +29,7 @@ soundkonverter_filter_sox::soundkonverter_filter_sox( QObject *parent, const QVa
 
     group = conf->group( "Plugin-"+name() );
     configVersion = group.readEntry( "configVersion", 0 );
-    samplingRateQuality = group.readEntry( "samplingRateQuality", "high" );
+    samplingRateQuality = group.readEntry( "samplingRateQuality", "very high" );
     experimentalEffectsEnabled = group.readEntry( "experimentalEffectsEnabled", false );
     soxLastModified = group.readEntry( "soxLastModified", QDateTime() );
     soxCodecList = group.readEntry( "codecList", QStringList() ).toSet();
